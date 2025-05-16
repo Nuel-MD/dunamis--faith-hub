@@ -1,19 +1,26 @@
-import { ExternalLink } from "lucide-react"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
+import { ExternalLink } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import type { Resource } from "@/lib/api";
 
 interface ResourceCardProps {
-  title: string
-  description: string
-  imageUrl: string
-  externalLink: string
-  category: "sermons" | "worship" | "books" | "movies"
+  title: string;
+  description: string;
+  imageUrl: string;
+  externalLink: string;
+  category: Resource["category"];
 }
 
-export default function ResourceCard({ title, description, imageUrl, externalLink, category }: ResourceCardProps) {
+export default function ResourceCard({
+  title,
+  description,
+  imageUrl,
+  externalLink,
+  category,
+}: ResourceCardProps) {
   const categoryColors = {
-    sermons: {
+    sermon: {
       border: "border-primary/30",
       button: "bg-primary hover:bg-primary/90",
       badge: "bg-primary/20 text-primary",
@@ -23,17 +30,17 @@ export default function ResourceCard({ title, description, imageUrl, externalLin
       button: "bg-secondary hover:bg-secondary/90",
       badge: "bg-secondary/20 text-secondary",
     },
-    books: {
+    book: {
       border: "border-tertiary/30",
       button: "bg-tertiary hover:bg-tertiary/90",
       badge: "bg-tertiary/20 text-tertiary",
     },
-    movies: {
+    movie: {
       border: "border-quaternary/30",
       button: "bg-quaternary hover:bg-quaternary/90",
       badge: "bg-quaternary/20 text-quaternary",
     },
-  }
+  };
 
   return (
     <Card
@@ -41,7 +48,9 @@ export default function ResourceCard({ title, description, imageUrl, externalLin
     >
       <div className="relative">
         <div className="absolute top-3 right-3 z-10">
-          <span className={`text-xs px-3 py-1 rounded-full font-medium ${categoryColors[category].badge} capitalize`}>
+          <span
+            className={`text-xs px-3 py-1 rounded-full font-medium ${categoryColors[category].badge} capitalize`}
+          >
             {category}
           </span>
         </div>
@@ -74,6 +83,5 @@ export default function ResourceCard({ title, description, imageUrl, externalLin
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }
-

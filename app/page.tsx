@@ -1,18 +1,34 @@
-import HeroSection from "@/components/hero-section"
-import CategoryCard from "@/components/category-card"
-import ResourceCard from "@/components/resource-card"
-import { Book, FileText, Music, Video, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { getResourcesByCategory } from "@/lib/data"
+import type React from "react";
+import { FileText, Music, Book, Video } from "lucide-react";
+import CategoryCard from "@/components/category-card";
+import ResourceCard from "@/components/resource-card";
+import { getFeaturedResources } from "@/lib/api";
+import type { Resource } from "@/lib/api";
+import HeroSection from "@/components/hero-section";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+// Loading state component
+function ResourceCardSkeleton() {
+  return (
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <Skeleton className="h-48 rounded-t-lg" />
+      <div className="p-6 space-y-4">
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+    </div>
+  );
+}
+
+export default async function Home() {
   const categories = [
     {
       title: "Sermons",
       description: "Inspiring messages from renowned preachers to strengthen your faith",
       icon: FileText,
-      href: "/sermons",
+      href: "/sermon",
       color: "primary" as const,
     },
     {
@@ -26,59 +42,53 @@ export default function Home() {
       title: "Books",
       description: "Enlightening Christian literature to deepen your understanding",
       icon: Book,
-      href: "/books",
+      href: "/book",
       color: "tertiary" as const,
     },
     {
       title: "Movies",
       description: "Visual content including testimonies, teachings, and inspirational stories",
       icon: Video,
-      href: "/movies",
+      href: "/movie",
       color: "quaternary" as const,
     },
-  ]
+  ];
 
-  // Get featured resources (first 3 from each category)
-  const featuredSermons = getResourcesByCategory("sermons").slice(0, 3)
-  const featuredWorship = getResourcesByCategory("worship").slice(0, 3)
-  const featuredBooks = getResourcesByCategory("books").slice(0, 3)
-  const featuredMovies = getResourcesByCategory("movies").slice(0, 3)
+  // Fetch featured resources (no authentication needed)
+  let featuredResources: Resource[] = [];
+  let error: string | null = null;
+
+  try {
+    featuredResources = await getFeaturedResources();
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Failed to load featured resources";
+    console.error("Error loading featured resources:", e);
+  }
 
   return (
-    <>
+    <main>
       <HeroSection />
 
-      <section id="categories" className="py-16 relative overflow-hidden">
+      {/* Categories Section */}
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Explore Our Resources</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <h2 className="text-3xl font-bold text-center mb-12">Explore Resources</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
-              <CategoryCard
-                key={category.title}
-                title={category.title}
-                description={category.description}
-                icon={category.icon}
-                href={category.href}
-                color={category.color}
-              />
+              <CategoryCard key={category.title} {...category} />
             ))}
           </div>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-12 -right-24 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
       </section>
 
+      {/* Statistics Section */}
       <section className="py-16 wave-pattern relative">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">Nurture Your Faith Journey</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">
+            Nurture Your Faith Journey
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-            Our carefully curated resources are designed to help you grow in your spiritual walk. Discover content that
-            inspires, educates, and strengthens your relationship with God.
+            Our carefully curated resources are designed to help you grow in your spiritual walk. Discover content that inspires, educates, and strengthens your relationship with God.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-primary/20">
@@ -101,110 +111,80 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Featured Resources Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Featured Resources</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore some of our most popular resources from each category
-            </p>
-          </div>
-
-          <div className="space-y-16">
-            {/* Featured Sermons */}
-            <div>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold">Featured Sermons</h3>
-                <Button variant="ghost" asChild className="text-primary">
-                  <Link href="/sermons" className="flex items-center gap-2">
-                    View All <ArrowRight size={16} />
-                  </Link>
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredSermons.map((sermon) => (
-                  <ResourceCard
-                    key={sermon.id}
-                    title={sermon.title}
-                    description={sermon.description}
-                    imageUrl={sermon.imageUrl}
-                    externalLink={sermon.externalLink}
-                    category="sermons"
-                  />
-                ))}
-              </div>
+          <h2 className="text-3xl font-bold text-center mb-12">Featured Resources</h2>
+          {error ? (
+            <div className="text-center text-red-600">
+              <p>{error}</p>
+              <p className="mt-2">Please try again later.</p>
             </div>
-
-            {/* Featured Worship */}
-            <div>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold">Featured Worship</h3>
-                <Button variant="ghost" asChild className="text-secondary">
-                  <Link href="/worship" className="flex items-center gap-2">
-                    View All <ArrowRight size={16} />
-                  </Link>
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredWorship.map((worship) => (
-                  <ResourceCard
-                    key={worship.id}
-                    title={worship.title}
-                    description={worship.description}
-                    imageUrl={worship.imageUrl}
-                    externalLink={worship.externalLink}
-                    category="worship"
-                  />
-                ))}
-              </div>
+          ) : featuredResources.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredResources.map((resource) => (
+                <ResourceCard
+                  key={resource.id}
+                  title={resource.title}
+                  description={resource.description}
+                  imageUrl={resource.imageUrl}
+                  externalLink={resource.externalLink}
+                  category={resource.category}
+                />
+              ))}
             </div>
-          </div>
+          ) : (
+            <div className="text-center text-muted-foreground">
+              <p>No featured resources available at the moment.</p>
+            </div>
+          )}
         </div>
       </section>
 
+      {/* Community Section */}
       <section className="py-16 cross-pattern">
         <div className="container mx-auto px-4">
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Join Our Community</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
+                Join Our Community
+              </h2>
               <p className="text-muted-foreground">
                 Connect with fellow believers and stay updated with the latest resources
               </p>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div className="p-6 rounded-lg bg-primary/10">
                 <h3 className="text-xl font-bold mb-2">Weekly Updates</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Get notified about new resources and spiritual insights
                 </p>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10">
-                  Subscribe
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary/10" asChild>
+                  <a href="/subscribe">Subscribe</a>
                 </Button>
               </div>
-
               <div className="p-6 rounded-lg bg-secondary/10">
                 <h3 className="text-xl font-bold mb-2">Prayer Requests</h3>
-                <p className="text-sm text-muted-foreground mb-4">Share your prayer needs with our community</p>
-                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary/10">
-                  Submit Request
+                <p className="text-sm text-muted-foreground mb-4">
+                  Share your prayer needs with our community
+                </p>
+                <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary/10" asChild>
+                  <a href="/prayer">Submit Request</a>
                 </Button>
               </div>
-
               <div className="p-6 rounded-lg bg-tertiary/10">
                 <h3 className="text-xl font-bold mb-2">Recommend</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Help us curate and share quality Christian resources
                 </p>
-                <Button variant="outline" className="border-tertiary text-tertiary hover:bg-tertiary/10">
-                  Join Us
+                <Button variant="outline" className="border-tertiary text-tertiary hover:bg-tertiary/10" asChild>
+                  <a href="/contribute">Join Us</a>
                 </Button>
               </div>
             </div>
           </div>
         </div>
       </section>
-    </>
-  )
+    </main>
+  );
 }
-

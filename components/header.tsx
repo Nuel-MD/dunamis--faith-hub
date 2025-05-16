@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Menu, X, Sun } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import Link from "next/link";
+import { Menu, X, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <header className="bg-white/90 backdrop-blur-sm shadow-sm sticky top-0 z-50">
@@ -22,7 +22,9 @@ export default function Header() {
               <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse-slow"></div>
             </div>
             <div>
-              <span className="text-2xl font-serif font-bold gradient-text">Dunamis</span>
+              <span className="text-2xl font-serif font-bold gradient-text">
+                Dunamis
+              </span>
               <span className="text-lg font-medium ml-1">Faith Hub</span>
             </div>
           </Link>
@@ -36,7 +38,7 @@ export default function Header() {
               Home
             </Link>
             <Link
-              href="/sermons"
+              href="/sermon"
               className="px-4 py-2 text-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
             >
               Sermons
@@ -54,7 +56,7 @@ export default function Header() {
               Books
             </Link>
             <Link
-              href="/movies"
+              href="/movie"
               className="px-4 py-2 text-foreground hover:text-quaternary hover:bg-quaternary/10 rounded-md transition-colors"
             >
               Movies
@@ -62,7 +64,11 @@ export default function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden text-foreground p-2" onClick={toggleMenu} aria-label="Toggle menu">
+          <button
+            className="md:hidden text-foreground p-2"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -78,7 +84,7 @@ export default function Header() {
               Home
             </Link>
             <Link
-              href="/sermons"
+              href="/sermon"
               className="block py-2 px-4 text-foreground hover:text-primary hover:bg-primary/10 rounded-md transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -99,7 +105,7 @@ export default function Header() {
               Books
             </Link>
             <Link
-              href="/movies"
+              href="/movie"
               className="block py-2 px-4 text-foreground hover:text-quaternary hover:bg-quaternary/10 rounded-md transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -109,6 +115,5 @@ export default function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }
-

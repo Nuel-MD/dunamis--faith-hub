@@ -1,0 +1,21 @@
+{
+  "name": "Dunamis Faith Resource Hub",
+  "short_name": "Dunamis Hub",
+  "description": "Access Christian content including sermons, worship materials, books, and movies",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#5bbad5",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
