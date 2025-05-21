@@ -1,72 +1,172 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { BookOpen, Music, Video, FileText } from "lucide-react"
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Book, Music, Video, FileText } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden hero-pattern">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-slate-50 dark:from-gray-900 dark:to-gray-800">
+      {/* Enhanced Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, delay: 0.2 }}
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, delay: 0.4 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-tertiary/10 rounded-full blur-3xl"
+        />
+      </div>
+
+      {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-block mb-4 px-6 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md">
-            <span className="text-primary font-medium">Nurturing Faith Through Resources</span>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight gradient-text">
-            Welcome to Your Faith Resource Hub
-          </h1>
-
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 bg-white/70 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-            Discover a wealth of Christian content to nurture your spiritual journey. Explore sermons, worship
-            materials, books, and movies all in one place.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="relative overflow-hidden group">
-              <Link href="#categories" className="flex items-center gap-2">
-                <span className="relative z-10">Explore Resources</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-yellow-600 group-hover:opacity-90 transition-opacity"></span>
-              </Link>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="mb-8"
+          >
+            <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+              Welcome to Dunamis Faith Hub
+            </span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-5xl md:text-7xl font-bold mb-6 gradient-text leading-tight"
+          >
+            Discover Inspiring Christian Resources
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto"
+          >
+            Access sermons, worship music, books, and movies to strengthen your
+            faith journey
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+          >
+            <Button
+              size="lg"
+              className="gradient-button text-lg px-8 py-6"
+              asChild
+            >
+              <a href="#categories">Explore Resources</a>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-2 hover:bg-primary/10">
-              <Link href="/about">Learn More</Link>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-8 py-6"
+              asChild
+            >
+              <a href="/about">Learn More</a>
             </Button>
-          </div>
+          </motion.div>
+        </div>
+
+        {/* Enhanced Floating Icons */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[
+            {
+              Icon: Book,
+              delay: 0,
+              position: "top-1/4 left-1/4",
+              size: "w-16 h-16",
+            },
+            {
+              Icon: Music,
+              delay: 0.2,
+              position: "top-1/3 right-1/4",
+              size: "w-20 h-20",
+            },
+            {
+              Icon: Video,
+              delay: 0.4,
+              position: "bottom-1/4 left-1/3",
+              size: "w-16 h-16",
+            },
+            {
+              Icon: FileText,
+              delay: 0.6,
+              position: "bottom-1/3 right-1/3",
+              size: "w-20 h-20",
+            },
+          ].map(({ Icon, delay, position, size }) => (
+            <motion.div
+              key={position}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay }}
+              className={`absolute ${position} text-primary/20 ${size}`}
+            >
+              <Icon className="w-full h-full" />
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      {/* Floating icons */}
-      <div className="absolute top-20 left-[10%] w-12 h-12 text-primary/40 animate-float">
-        <BookOpen size={48} />
-      </div>
-      <div
-        className="absolute top-40 right-[15%] w-12 h-12 text-secondary/40 animate-float"
-        style={{ animationDelay: "1s" }}
-      >
-        <Music size={48} />
-      </div>
-      <div
-        className="absolute bottom-20 left-[20%] w-12 h-12 text-tertiary/40 animate-float"
-        style={{ animationDelay: "1.5s" }}
-      >
-        <Video size={48} />
-      </div>
-      <div
-        className="absolute bottom-40 right-[10%] w-12 h-12 text-quaternary/40 animate-float"
-        style={{ animationDelay: "0.5s" }}
-      >
-        <FileText size={48} />
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-tertiary/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+      {/* Enhanced Light Rays */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, rotate: -45 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute top-0 left-1/2 w-2 h-full bg-gradient-to-b from-primary/20 to-transparent"
+        />
+        <motion.div
+          initial={{ opacity: 0, rotate: 45 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          transition={{ duration: 1.5, delay: 0.2 }}
+          className="absolute top-0 left-1/2 w-2 h-full bg-gradient-to-b from-secondary/20 to-transparent"
+        />
+        <motion.div
+          initial={{ opacity: 0, rotate: 0 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          transition={{ duration: 1.5, delay: 0.4 }}
+          className="absolute top-0 left-1/2 w-2 h-full bg-gradient-to-b from-tertiary/20 to-transparent"
+        />
       </div>
 
-      {/* Light rays */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 shine"></div>
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center">
+          <motion.div
+            animate={{
+              y: [0, 12, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: "loop",
+            }}
+            className="w-1.5 h-1.5 bg-primary rounded-full mt-2"
+          />
+        </div>
+      </motion.div>
     </section>
-  )
+  );
 }
-

@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
     try {
       // Send login request to backend
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
 
       // Verify user is an admin
       const profileResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

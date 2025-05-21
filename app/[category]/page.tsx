@@ -1,11 +1,8 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ResourceCard from "@/components/resource-card";
-import { getResourcesByCategory } from "@/lib/api";
-import type { Resource } from "@/lib/api";
 import { FileText, Music, Book, Video } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import CategoryPageContent from "@/components/category-page-content";
 
 interface CategoryPageProps {
   params: {
@@ -51,23 +48,10 @@ const categoryColors: Record<string, string> = {
   movie: "gradient-bg-green",
 };
 
-function ResourceCardSkeleton() {
-  return (
-    <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-      <Skeleton className="h-48 rounded-t-lg" />
-      <div className="p-6 space-y-4">
-        <Skeleton className="h-6 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-2/3" />
-      </div>
-    </div>
-  );
-}
-
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
-  const category = params?.category;
+  const category = await Promise.resolve(params.category);
   const title = categoryMap[category];
 
   if (!title) {
@@ -77,77 +61,27 @@ export async function generateMetadata({
   return {
     title: `${title} - Dunamis Faith Resource Hub`,
     description: `Explore our collection of Christian ${category} to nurture your spiritual journey.`,
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    ),
   };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const category = params?.category;
+  const category = await Promise.resolve(params.category);
   const validCategories = ["sermon", "worship", "book", "movie"];
 
   if (!category || !validCategories.includes(category)) {
     notFound();
   }
 
-  // Fetch resources (no authentication needed)
-  let resources: Resource[] = [];
-  let error: string | null = null;
-
-  try {
-    resources = await getResourcesByCategory(category);
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Failed to load resources";
-    console.error("Error loading resources:", e);
-  }
-
   return (
-    <div className="min-h-screen">
-      <div
-        className={`py-16 ${categoryColors[category]} relative overflow-hidden`}
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 max-w-3xl mx-auto">
-            <div className="inline-flex items-center justify-center p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-md mb-6">
-              {categoryIcons[category]}
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">
-              {categoryTitles[category]}
-            </h1>
-            <p className="text-muted-foreground text-lg bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-              {categoryDescriptions[category]}
-            </p>
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="absolute -top-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-4 py-12">
-        {error ? (
-          <div className="text-center text-red-600">
-            <p>{error}</p>
-            <p className="mt-2">Please try again later.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {resources.length > 0
-              ? resources.map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    title={resource.title}
-                    description={resource.description}
-                    imageUrl={resource.imageUrl}
-                    externalLink={resource.externalLink}
-                    category={resource.category}
-                  />
-                ))
-              : Array.from({ length: 6 }).map((_, i) => (
-                  <ResourceCardSkeleton key={i} />
-                ))}
-          </div>
-        )}
-      </div>
-    </div>
+    <CategoryPageContent
+      category={category}
+      categoryColors={categoryColors}
+      categoryIcons={categoryIcons}
+      categoryTitles={categoryTitles}
+      categoryDescriptions={categoryDescriptions}
+    />
   );
 }

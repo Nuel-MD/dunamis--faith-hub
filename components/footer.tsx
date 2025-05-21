@@ -11,21 +11,21 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-b from-accent to-accent/50 py-12 mt-12 border-t border-primary/20">
+    <footer className="bg-gradient-to-b from-accent to-accent/50 dark:from-gray-800 dark:to-gray-900 py-12 mt-12 border-t border-primary/20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-xl font-bold mb-4 gradient-text">
               Dunamis Faith Hub
             </h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground dark:text-gray-400 mb-4">
               Providing easy access to Christian content, including sermons,
               worship materials, books, and movies.
             </p>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
                 aria-label="Facebook"
               >
                 <svg
@@ -40,14 +40,14 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a
                 href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
                 aria-label="YouTube"
               >
                 <Youtube size={20} />
@@ -94,23 +94,23 @@ export default function Footer() {
           </div> */}
 
           <div>
-            <h3 className="text-xl font-bold mb-4">Contact</h3>
+            <h3 className="text-xl font-bold mb-4 dark:text-gray-100">Contact</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin size={18} className="mr-2 text-primary mt-0.5" />
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground dark:text-gray-400">
                   123 Faith Street, Lagos
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone size={18} className="mr-2 text-primary" />
-                <span className="text-muted-foreground">(123) 456-7890</span>
+                <span className="text-muted-foreground dark:text-gray-400">(123) 456-7890</span>
               </li>
               <li className="flex items-center">
                 <Mail size={18} className="mr-2 text-primary" />
                 <a
                   href="mailto:contact@dunamisfaithhub.com"
-                  className="text-muted-foreground hover:text-primary hover:underline"
+                  className="text-muted-foreground hover:text-primary dark:text-gray-400 dark:hover:text-primary hover:underline"
                 >
                   contact@dunamisfaithhub.com
                 </a>
@@ -119,19 +119,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+        <div className="border-t border-border dark:border-gray-700 mt-8 pt-8 text-center text-muted-foreground dark:text-gray-400">
           <p>
             &copy; {currentYear} Dunamis Faith Resource Hub. All rights
             reserved.
           </p>
           <div className="mt-2 flex justify-center space-x-4 text-sm">
-            <Link href="#" className="hover:text-primary hover:underline">
+            <Link href="#" className="hover:text-primary dark:hover:text-primary hover:underline">
               Terms of Service
             </Link>
-            <Link href="#" className="hover:text-primary hover:underline">
+            <Link href="#" className="hover:text-primary dark:hover:text-primary hover:underline">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-primary hover:underline">
+            <Link href="#" className="hover:text-primary dark:hover:text-primary hover:underline">
               Cookie Policy
             </Link>
           </div>

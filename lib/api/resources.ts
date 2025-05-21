@@ -43,7 +43,7 @@ export const resourcesApi = {
     category?: string;
   }): Promise<PaginatedResponse<Resource>> {
     try {
-      const { data } = await axiosClient.get("/resources", { params });
+      const { data } = await axiosClient.get("/api/resources", { params });
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<ResourceError>;
@@ -58,7 +58,7 @@ export const resourcesApi = {
 
   async getResource(id: string): Promise<Resource> {
     try {
-      const { data } = await axiosClient.get(`/resources/${id}`);
+      const { data } = await axiosClient.get(`/api/resources/${id}`);
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<ResourceError>;
@@ -73,7 +73,7 @@ export const resourcesApi = {
 
   async createResource(resource: Omit<Resource, "id">): Promise<Resource> {
     try {
-      const { data } = await axiosClient.post("/resources", resource);
+      const { data } = await axiosClient.post("/api/resources", resource);
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<ResourceError>;
@@ -91,7 +91,7 @@ export const resourcesApi = {
     resource: Partial<Resource>
   ): Promise<Resource> {
     try {
-      const { data } = await axiosClient.put(`/resources/${id}`, resource);
+      const { data } = await axiosClient.put(`/api/resources/${id}`, resource);
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<ResourceError>;
@@ -106,7 +106,7 @@ export const resourcesApi = {
 
   async deleteResource(id: string): Promise<void> {
     try {
-      await axiosClient.delete(`/resources/${id}`);
+      await axiosClient.delete(`/api/resources/${id}`);
     } catch (error) {
       const axiosError = error as AxiosError<ResourceError>;
       throw {

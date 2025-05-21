@@ -44,33 +44,40 @@ export default function ResourceCard({
 
   return (
     <Card
-      className={`h-full overflow-hidden hover:shadow-lg transition-all duration-300 border-2 ${categoryColors[category].border} group`}
+      className={`h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-2 ${categoryColors[category].border} group relative`}
     >
       <div className="relative">
-        <div className="absolute top-3 right-3 z-10">
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
           <span
-            className={`text-xs px-3 py-1 rounded-full font-medium ${categoryColors[category].badge} capitalize`}
+            className={`text-xs px-2 sm:px-3 py-1 rounded-full font-medium ${categoryColors[category].badge} capitalize backdrop-blur-sm`}
           >
             {category}
           </span>
         </div>
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative h-40 sm:h-48 md:h-56 w-full overflow-hidden">
           <Image
             src={imageUrl || "/placeholder.svg"}
             alt={title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </div>
       </div>
-      <CardContent className="p-6">
-        <h3 className="text-xl font-bold mb-2 line-clamp-1">{title}</h3>
-        <p className="text-muted-foreground line-clamp-3 mb-4">{description}</p>
+      <CardContent className="p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+          {title}
+        </h3>
+        <p className="text-sm sm:text-base text-muted-foreground line-clamp-2 sm:line-clamp-3 mb-3 sm:mb-4 group-hover:text-foreground/80 transition-colors duration-300">
+          {description}
+        </p>
       </CardContent>
-      <CardFooter className="px-6 pb-6 pt-0">
-        <Button asChild className={`w-full ${categoryColors[category].button}`}>
+      <CardFooter className="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
+        <Button
+          asChild
+          className={`w-full text-sm sm:text-base ${categoryColors[category].button} group-hover:scale-[1.02] transition-transform duration-300`}
+        >
           <a
             href={externalLink}
             target="_blank"
@@ -78,10 +85,14 @@ export default function ResourceCard({
             className="flex items-center justify-center gap-2"
           >
             <span>View Resource</span>
-            <ExternalLink size={16} />
+            <ExternalLink
+              size={14}
+              className="group-hover:translate-x-0.5 transition-transform duration-300"
+            />
           </a>
         </Button>
       </CardFooter>
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary/20 rounded-lg transition-colors duration-300 pointer-events-none"></div>
     </Card>
   );
 }

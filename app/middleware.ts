@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     // Verify admin role
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
