@@ -1,21 +1,8 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Poppins, Lora } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-lora",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -23,7 +10,10 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: "Dunamis Faith Resource Hub",
   description:
     "Access Christian content including sermons, worship materials, books, and movies",
@@ -58,14 +48,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://dunamis-faith-hub.com",
+    url: baseUrl,
     title: "Dunamis Faith Resource Hub",
     description:
       "Access Christian content including sermons, worship materials, books, and movies",
     siteName: "Dunamis Faith Resource Hub",
     images: [
       {
-        url: "/og-image.png",
+        url: `${baseUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Dunamis Faith Resource Hub",
@@ -77,7 +67,7 @@ export const metadata: Metadata = {
     title: "Dunamis Faith Resource Hub",
     description:
       "Access Christian content including sermons, worship materials, books, and movies",
-    images: ["/og-image.png"],
+    images: [`${baseUrl}/og-image.png`],
   },
   robots: {
     index: true,
@@ -99,9 +89,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${lora.variable} font-sans min-h-screen flex flex-col dark:bg-gray-900 dark:text-gray-100`}
-      >
+      <body className="min-h-screen flex flex-col dark:bg-gray-900 dark:text-gray-100">
         <script
           dangerouslySetInnerHTML={{
             __html: `

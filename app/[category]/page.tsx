@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FileText, Music, Book, Video } from "lucide-react";
 import CategoryPageContent from "@/components/category-page-content";
+import { Suspense } from "react";
 
 interface CategoryPageProps {
   params: {
@@ -48,6 +49,15 @@ const categoryColors: Record<string, string> = {
   movie: "gradient-bg-green",
 };
 
+export function generateStaticParams() {
+  return [
+    { category: "sermon" },
+    { category: "worship" },
+    { category: "book" },
+    { category: "movie" },
+  ];
+}
+
 export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
@@ -58,12 +68,25 @@ export async function generateMetadata({
     return { title: "Category Not Found" };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
   return {
     title: `${title} - Dunamis Faith Resource Hub`,
     description: `Explore our collection of Christian ${category} to nurture your spiritual journey.`,
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
-    ),
+    metadataBase: new URL(baseUrl),
+    openGraph: {
+      title: `${title} - Dunamis Faith Resource Hub`,
+      description: `Explore our collection of Christian ${category} to nurture your spiritual journey.`,
+      url: `${baseUrl}/${category}`,
+      siteName: "Dunamis Faith Resource Hub",
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} - Dunamis Faith Resource Hub`,
+      description: `Explore our collection of Christian ${category} to nurture your spiritual journey.`,
+    },
   };
 }
 
@@ -76,12 +99,20 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <CategoryPageContent
-      category={category}
-      categoryColors={categoryColors}
-      categoryIcons={categoryIcons}
-      categoryTitles={categoryTitles}
-      categoryDescriptions={categoryDescriptions}
-    />
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        </div>
+      }
+    >
+      <CategoryPageContent
+        category={category}
+        categoryColors={categoryColors}
+        categoryIcons={categoryIcons}
+        categoryTitles={categoryTitles}
+        categoryDescriptions={categoryDescriptions}
+      />
+    </Suspense>
   );
 }
